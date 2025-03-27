@@ -14,7 +14,7 @@ namespace SinemaApp.Entities.Concrete
         public string Email { get; set; } 
         public string Sifre { get; set; } 
         public int RolId { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = true;
         public Rol Rol { get; set; }
         public ICollection<Bilet> Biletler { get; set; }
 
