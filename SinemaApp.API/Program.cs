@@ -12,6 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//var configValue = builder.Configuration.GetValue<string>("ConnectionStrings:SinemaAppConnection");
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

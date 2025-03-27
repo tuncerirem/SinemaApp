@@ -15,5 +15,11 @@ namespace SinemaApp.Entities.Concrete
         public decimal Fiyat { get; set; }
         public string Qr { get; set; }
         public int FilmId { get; set; }
+
+        public Kullanici Kullanici { get; set; }
+        public Seans Seans { get; set; }
+        public Koltuk Koltuk { get; set; }
+        public Film Film { get; set; }
+
     }
 }

@@ -13,6 +13,8 @@ namespace SinemaApp.Entities.Concrete
         public DateTime Bitis { get; set; }
         public int SalonId { get; set; }
         public int FilmId { get; set; }
-
+        public Salon Salon { get; set; }  
+        public Film Film { get; set; }  
+        public ICollection<Bilet> Biletler { get; set; }
     }
 }

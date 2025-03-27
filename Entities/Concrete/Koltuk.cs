@@ -11,5 +11,7 @@ namespace SinemaApp.Entities.Concrete
         public int Id { get; set; }
         public int SalonId { get; set; }
         public string Durum { get; set; }
+        public Salon Salon { get; set; }
+
     }
 }

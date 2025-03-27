@@ -12,5 +12,6 @@ namespace SinemaApp.Entities.Concrete
         public string Ad { get; set; }
         public string Kapasite { get; set; }
         public ICollection<Koltuk> Koltuklar { get; set; }
+        public ICollection<Seans> Seanslar { get; set; }
     }
 }

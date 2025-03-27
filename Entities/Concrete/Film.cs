@@ -16,6 +16,7 @@ namespace SinemaApp.Entities.Concrete
         public string Fragman { get; set; }
         public string Fotograf { get; set; }
         public ICollection<Seans> Seanslar { get; set; }
+        public ICollection<Bilet> Biletler { get; set; }    
 
 
     }

@@ -11,15 +11,16 @@ namespace SinemaApp.DataAccessLayer.Context
 {
     public class SinemaAppContext : DbContext
     {
-        //private readonly IConfiguration _configuration;
-        //public SinemaAppContext(DbContextOptions<SinemaAppContext> options, IConfiguration configuration) : base(options) {
-        //    _configuration = configuration;
-        //}
+        private readonly IConfiguration _configuration;
+        public SinemaAppContext(DbContextOptions<SinemaAppContext> options, IConfiguration configuration) : base(options)
+        {
+            _configuration = configuration;
+        }
 
         //public Context()
         //{
         //}
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //var connectionString = _configuration.GetConnectionString("SinemaAppConnection");
