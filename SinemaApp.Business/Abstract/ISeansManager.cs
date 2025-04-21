@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SinemaApp.Business.Abstract
 {
-    public interface IKoltukService : IGenericService<Koltuk>
+    public interface ISeansManager : IGenericManager<Seans>
     {
     }
 }

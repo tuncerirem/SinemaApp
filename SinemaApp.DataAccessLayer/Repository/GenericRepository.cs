@@ -40,16 +40,27 @@ namespace SinemaApp.DataAccessLayer.Repository
         //{
         //    return _context.Set<T>().Where(predicate); // IQueryable döndürülür, burada sorgu henüz çalıştırılmaz.
         //}
-
-        public async Task<List<T>> FilterAsync(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> GetQueryable()
         {
-            /*İlgili tablodan verileri çeker ve gerekli filtreleri uygular*/
-            return await _context.Set<T>()
-            //.Where(x => !EF.Property<bool>(x, "IsDeleted")) 
-            .Where(predicate)
-            .ToListAsync();
+            return _context.Set<T>();
         }
 
+        public async Task<List<T>> FilterAsync(Expression<Func<T, bool>> filter)
+        {
+            
+            return await _context.Set<T>()
+            .Where(x => !EF.Property<bool>(x, "IsDeleted"))
+            .Where(filter)
+            .ToListAsync();
+
+
+
+        }
+
+        public async Task<T> GetFilterAsync(Expression<Func<T, bool>> filter)
+        {
+            return await _context.Set<T>().Where(filter).FirstOrDefaultAsync();
+        }
 
         public async Task UpdateAsync(T entity)
         {

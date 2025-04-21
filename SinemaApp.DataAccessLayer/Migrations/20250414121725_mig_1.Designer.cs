@@ -12,8 +12,8 @@ using SinemaApp.DataAccessLayer.Context;
 namespace SinemaApp.DataAccessLayer.Migrations
 {
     [DbContext(typeof(SinemaAppContext))]
-    [Migration("20250326110847_mig1")]
-    partial class mig1
+    [Migration("20250414121725_mig_1")]
+    partial class mig_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,9 @@ namespace SinemaApp.DataAccessLayer.Migrations
                     b.Property<int>("FilmId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FilmId1")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Fiyat")
                         .HasColumnType("decimal(18,2)");
 
@@ -45,6 +48,9 @@ namespace SinemaApp.DataAccessLayer.Migrations
                     b.Property<int>("KullaniciId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("KullaniciId1")
+                        .HasColumnType("int");
+
                     b.Property<string>("Qr")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -52,7 +58,25 @@ namespace SinemaApp.DataAccessLayer.Migrations
                     b.Property<int>("SeansId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SeansId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("FilmId");
+
+                    b.HasIndex("FilmId1");
+
+                    b.HasIndex("KoltukId")
+                        .IsUnique();
+
+                    b.HasIndex("KullaniciId");
+
+                    b.HasIndex("KullaniciId1");
+
+                    b.HasIndex("SeansId");
+
+                    b.HasIndex("SeansId1");
 
                     b.ToTable("Biletler");
                 });
@@ -96,6 +120,9 @@ namespace SinemaApp.DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BiletId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Durum")
                         .IsRequired()
@@ -210,39 +237,115 @@ namespace SinemaApp.DataAccessLayer.Migrations
 
                     b.HasIndex("FilmId");
 
+                    b.HasIndex("SalonId");
+
                     b.ToTable("Seanslar");
+                });
+
+            modelBuilder.Entity("SinemaApp.Entities.Concrete.Bilet", b =>
+                {
+                    b.HasOne("SinemaApp.Entities.Concrete.Film", "Film")
+                        .WithMany()
+                        .HasForeignKey("FilmId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SinemaApp.Entities.Concrete.Film", null)
+                        .WithMany("Biletler")
+                        .HasForeignKey("FilmId1");
+
+                    b.HasOne("SinemaApp.Entities.Concrete.Koltuk", "Koltuk")
+                        .WithOne("Bilet")
+                        .HasForeignKey("SinemaApp.Entities.Concrete.Bilet", "KoltukId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SinemaApp.Entities.Concrete.Kullanici", "Kullanici")
+                        .WithMany()
+                        .HasForeignKey("KullaniciId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SinemaApp.Entities.Concrete.Kullanici", null)
+                        .WithMany("Biletler")
+                        .HasForeignKey("KullaniciId1");
+
+                    b.HasOne("SinemaApp.Entities.Concrete.Seans", "Seans")
+                        .WithMany()
+                        .HasForeignKey("SeansId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SinemaApp.Entities.Concrete.Seans", null)
+                        .WithMany("Biletler")
+                        .HasForeignKey("SeansId1");
+
+                    b.Navigation("Film");
+
+                    b.Navigation("Koltuk");
+
+                    b.Navigation("Kullanici");
+
+                    b.Navigation("Seans");
                 });
 
             modelBuilder.Entity("SinemaApp.Entities.Concrete.Koltuk", b =>
                 {
-                    b.HasOne("SinemaApp.Entities.Concrete.Salon", null)
+                    b.HasOne("SinemaApp.Entities.Concrete.Salon", "Salon")
                         .WithMany("Koltuklar")
                         .HasForeignKey("SalonId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Salon");
+                });
+
+            modelBuilder.Entity("SinemaApp.Entities.Concrete.Kullanici", b =>
+                {
+                    b.HasOne("SinemaApp.Entities.Concrete.Rol", "Rol")
+                        .WithMany("Kullanicilar")
+                        .HasForeignKey("RolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("SinemaApp.Entities.Concrete.Seans", b =>
+                {
+                    b.HasOne("SinemaApp.Entities.Concrete.Film", "Film")
+                        .WithMany("Seanslar")
+                        .HasForeignKey("FilmId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SinemaApp.Entities.Concrete.Salon", "Salon")
+                        .WithMany()
+                        .HasForeignKey("SalonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Film");
+
+                    b.Navigation("Salon");
+                });
+
+            modelBuilder.Entity("SinemaApp.Entities.Concrete.Film", b =>
+                {
+                    b.Navigation("Biletler");
+
+                    b.Navigation("Seanslar");
+                });
+
+            modelBuilder.Entity("SinemaApp.Entities.Concrete.Koltuk", b =>
+                {
+                    b.Navigation("Bilet")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("SinemaApp.Entities.Concrete.Kullanici", b =>
                 {
-                    b.HasOne("SinemaApp.Entities.Concrete.Rol", null)
-                        .WithMany("Kullanicilar")
-                        .HasForeignKey("RolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SinemaApp.Entities.Concrete.Seans", b =>
-                {
-                    b.HasOne("SinemaApp.Entities.Concrete.Film", null)
-                        .WithMany("Seanslar")
-                        .HasForeignKey("FilmId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SinemaApp.Entities.Concrete.Film", b =>
-                {
-                    b.Navigation("Seanslar");
+                    b.Navigation("Biletler");
                 });
 
             modelBuilder.Entity("SinemaApp.Entities.Concrete.Rol", b =>
@@ -253,6 +356,11 @@ namespace SinemaApp.DataAccessLayer.Migrations
             modelBuilder.Entity("SinemaApp.Entities.Concrete.Salon", b =>
                 {
                     b.Navigation("Koltuklar");
+                });
+
+            modelBuilder.Entity("SinemaApp.Entities.Concrete.Seans", b =>
+                {
+                    b.Navigation("Biletler");
                 });
 #pragma warning restore 612, 618
         }

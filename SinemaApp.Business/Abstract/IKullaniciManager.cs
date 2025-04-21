@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SinemaApp.DataAccessLayer.Abstract
+namespace SinemaApp.Business.Abstract
 {
-    public interface IRolDal : IGenericDal<Rol>
+    public interface IKullaniciManager : IGenericManager<Kullanici>
     {
+        
     }
 }

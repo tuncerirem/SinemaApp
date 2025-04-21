@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace SinemaApp.Business.Abstract
 {
-    public interface IBiletService : IGenericService<Bilet>
+    public interface IFilmManager : IGenericManager<Film>
     {
+        
     }
 }

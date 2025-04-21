@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SinemaApp.DataAccessLayer.Abstract
+namespace SinemaApp.Business.Abstract
 {
-    public interface IFilmDal : IGenericDal<Film>
+    public interface IKoltukManager : IGenericManager<Koltuk>
     {
     }
 }

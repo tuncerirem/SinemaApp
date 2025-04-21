@@ -1,19 +1,42 @@
 using Microsoft.EntityFrameworkCore;
 using SinemaApp.DataAccessLayer.Context;
+using SinemaApp.DataAccessLayer.Abstract;
+using SinemaApp.DataAccessLayer.Repository;
+using SinemaApp.Business.Abstract;
+using SinemaApp.Entities.Concrete;
+using SinemaApp.Business.Concrete;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+//builder.Services.AddScoped(typeof(IGenericDal<>), typeof(GenericRepository<>));
+////builder.Services.AddScoped<IBiletService, BiletManager>();
+////builder.Services.AddScoped (typeof(IBiletDal, typeof(GenericRepository<>));
+//builder.Services.AddScoped<IKullaniciService, KullaniciManager>();
+////builder.Services.AddScoped<IKullaniciDal>(); 
+builder.Services.AddScoped<IFilmManager, FilmManager>();
+builder.Services.AddScoped(typeof(IGenericDal<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IKullaniciManager, KullaniciManager>();
+builder.Services.AddDbContext<SinemaAppContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SinemaAppConnection"));
+});
+builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-//var configValue = builder.Configuration.GetValue<string>("ConnectionStrings:SinemaAppConnection");
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -25,40 +48,16 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+
+app.UseRouting();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-//using Microsoft.EntityFrameworkCore;
-//using SinemaApp.DataAccessLayer.Context; // Import your DbContext namespace
 
-//var builder = WebApplication.CreateBuilder(args);
-
-//// Add services to the container.
-//builder.Services.AddControllers();
-
-//// Access Configuration through the builder and set up DbContext
-
-
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
-//var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
-
-//app.MapControllers();
-
-//app.Run();

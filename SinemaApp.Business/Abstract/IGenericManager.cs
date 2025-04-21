@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace SinemaApp.Business.Abstract
 {
-    public interface IGenericService<T> where T : class
+    public interface IGenericManager<T> where T : class
     {
-        Task<List<T>> TFilterAsync(Expression<Func<T, bool>> predicate);
+        Task<List<T>> TFilterAsync(Expression<Func<T, bool>> filter);
+        Task<T> GetFilterAsync(Expression<Func<T, bool>> filter);
         Task TAddAsync(T entity);
         Task TUpdateAsync(T entity);
         Task TDeleteAsync(T entity);
+        Task<List<T>> GetAllWithSeansAsync();
     }
 }
