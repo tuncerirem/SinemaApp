@@ -30,7 +30,8 @@ namespace SinemaApp.API.Controllers
                 return Unauthorized("Geçersiz email veya şifre");
             }
 
-            return Ok(new { redirectURL = "/Home/Index" });
+            return Ok(new { redirectURL = "/Home/Filmler" });
         }
+
     }
 }

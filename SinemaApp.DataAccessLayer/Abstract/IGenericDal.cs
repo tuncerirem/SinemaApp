@@ -12,7 +12,6 @@ namespace SinemaApp.DataAccessLayer.Abstract
         Task<List<T>> FilterAsync(Expression<Func<T, bool>> filter);
         Task<T> GetFilterAsync(Expression<Func<T, bool>> filter);
         IQueryable<T> GetQueryable();
-
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);

@@ -17,7 +17,7 @@ namespace SinemaApp.API.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("GetAllFilms")]
         public async Task<ActionResult<List<Film_DTO>>> GetAllFilms()
         {
             var films = await _filmManager.GetAllWithSeansAsync();
