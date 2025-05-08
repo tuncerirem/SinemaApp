@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+<h1>Film Ekleme</h1>
+
+<form>
+    <div class="form-group">
+        <label for="filmAd">Film Adı</label>
+        <input type="text" id="filmAd" class="form-control" placeholder="Film Adı" />
+    </div>
+
+    <div class="form-group">
+        <label for="filmTur">Tür</label>
+        <input type="text" id="filmTur" class="form-control" placeholder="Tür" />
+    </div>
+
+    <div class="form-group">
+        <label for="filmZaman">Süre (Dakika)</label>
+        <input type="number" id="filmZaman" class="form-control" placeholder="Süre (dk)" />
+    </div>
+
+    <div class="form-group">
+        <label for="filmFotograf">Fotoğraf URL</label>
+        <input type="text" id="filmFotograf" class="form-control" placeholder="Fotoğraf URL" />
+    </div>
+
+    <div class="form-group">
+        <label for="filmFragman">Fragman URL</label>
+        <input type="text" id="filmFragman" class="form-control" placeholder="Fragman URL" />
+    </div>
+
+    
+    <div class="form-group">
+        <label for="seansAdet">Seans Adedi</label>
+        <input type="number" id="seansAdet" class="form-control" placeholder="Seans Adedi" min="1" />
+    </div>
+
+   
+    <div id="seansInputs"></div>
+
+   
+    <button class="btn btn-primary" id="filmEkleBtn" type="button">Film Ekle</button>
+</form>
+
+@* <script src="~/js/Admin.js"></script> *@
+<script src="~/js/Login.js"></script>
+
+
+
+

@@ -5,20 +5,50 @@ using SinemaApp.DataAccessLayer.Repository;
 using SinemaApp.Business.Abstract;
 using SinemaApp.Entities.Concrete;
 using SinemaApp.Business.Concrete;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//builder.Services.AddScoped(typeof(IGenericDal<>), typeof(GenericRepository<>));
-////builder.Services.AddScoped<IBiletService, BiletManager>();
-////builder.Services.AddScoped (typeof(IBiletDal, typeof(GenericRepository<>));
-//builder.Services.AddScoped<IKullaniciService, KullaniciManager>();
-////builder.Services.AddScoped<IKullaniciDal>(); 
+
 builder.Services.AddScoped<IFilmManager, FilmManager>();
 builder.Services.AddScoped(typeof(IGenericDal<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IKullaniciManager, KullaniciManager>();
+builder.Services.AddScoped<ISalonManager, SalonManager>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IKoltukManager, KoltukManager>();
+builder.Services.AddScoped<ISeansManager, SeansManager>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+    options.TokenValidationParameters = new
+    Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+        ClockSkew = TimeSpan.Zero
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = context =>
+        {
+           
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
+        }
+    };
+});
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+});
+
 builder.Services.AddDbContext<SinemaAppContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SinemaAppConnection"));
@@ -40,7 +70,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -55,6 +85,7 @@ app.UseRouting();
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

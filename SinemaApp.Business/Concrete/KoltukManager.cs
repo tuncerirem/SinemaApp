@@ -1,4 +1,6 @@
-﻿using SinemaApp.Business.Abstract;
+﻿using Microsoft.EntityFrameworkCore;
+using SinemaApp.Business.Abstract;
+using SinemaApp.DataAccessLayer.Abstract;
 using SinemaApp.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,11 +13,11 @@ namespace SinemaApp.Business.Concrete
 {
     public class KoltukManager : IKoltukManager
     {
-        public Task<List<Koltuk>> GetAllWithSeansAsync()
+        private readonly IGenericDal<Koltuk> _koltukDal;
+        public KoltukManager(IGenericDal<Koltuk>  koltukDal)
         {
-            throw new NotImplementedException();
+            _koltukDal = koltukDal;
         }
-
         public Task<Koltuk> GetFilterAsync(Expression<Func<Koltuk, bool>> filter)
         {
             throw new NotImplementedException();
@@ -31,14 +33,16 @@ namespace SinemaApp.Business.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<List<Koltuk>> TFilterAsync(Expression<Func<Koltuk, bool>> predicate)
+        public async Task<List<Koltuk>> TFilterAsync(Expression<Func<Koltuk, bool>> filter)
         {
-            throw new NotImplementedException();
+            return await _koltukDal.GetQueryable()
+                                   .Where(filter)
+                                   .ToListAsync();
         }
 
-        public Task TUpdateAsync(Koltuk entity)
+        public async Task TUpdateAsync(Koltuk entity)
         {
-            throw new NotImplementedException();
+            await _koltukDal.UpdateAsync(entity);
         }
     }
 }

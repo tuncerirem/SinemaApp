@@ -34,4 +34,21 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Koltuklar()
+    {
+        return View();
+    }
+    public IActionResult Salonlar()
+    {
+        return View(); 
+    }
+    public IActionResult Biletler()
+    {
+        return View();
+    }
+    public IActionResult Admin()
+    {
+        return View();
+    }
+
 }

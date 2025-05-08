@@ -20,7 +20,7 @@ namespace SinemaApp.API.Controllers
         [HttpGet("GetAllFilms")]
         public async Task<ActionResult<List<Film_DTO>>> GetAllFilms()
         {
-            var films = await _filmManager.GetAllWithSeansAsync();
+            var films = await _filmManager.TFilterAsync(f => true);
             var filmDtos = films.Select(f => new Film_DTO
             {
                 Id = f.Id,
@@ -35,7 +35,7 @@ namespace SinemaApp.API.Controllers
                     Baslangic = s.Baslangic,
                     Bitis = s.Bitis
                 }).ToList()
-            }).ToList();
+            });
             return Ok(filmDtos);
         }
     }

@@ -19,15 +19,11 @@ namespace SinemaApp.Business.Concrete
             _filmDal = filmDal;
         }
 
-        public Task<Film> GetFilterAsync(Expression<Func<Film, bool>> filter)
+        public async Task<Film> GetFilterAsync(Expression<Func<Film, bool>> filter)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task TAddAsync(Film entity)
-        {
-            await _filmDal.AddAsync(entity);
-
+           return await _filmDal.GetQueryable()
+           .Include(f => f.Seanslar)
+           .FirstOrDefaultAsync(filter);
         }
 
         public async Task TDeleteAsync(Film entity)
@@ -37,20 +33,23 @@ namespace SinemaApp.Business.Concrete
 
         public async Task<List<Film>> TFilterAsync(Expression<Func<Film, bool>> filter)
         {
-            return await _filmDal.FilterAsync(filter);
+            return await _filmDal.GetQueryable()
+            .Include(f => f.Seanslar)
+            .Where(filter)
+            .ToListAsync();
         }
+        
 
         public async Task TUpdateAsync(Film entity)
         {
             await _filmDal.UpdateAsync(entity);
         }
-        public async Task<List<Film>> GetAllWithSeansAsync()
+        
+        public async Task TAddAsync(Film entity)
         {
-            return await _filmDal.GetQueryable()
-                                 .Include(f => f.Seanslar)
-                                 .ToListAsync();
+            await _filmDal.AddAsync(entity);
+            
         }
-
     }
 
 }

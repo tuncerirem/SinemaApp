@@ -1,13 +1,9 @@
 ﻿$(document).ready(function () {
-    $.ajax({
-        url: "https://localhost:44340/api/Film/GetAllFilms",  
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-           
+    VeriList("Film", "GetAllFilms")
+        .then(function (data) {
             $('#filmTable').DataTable({
                 data: data,
-                ordering: false, // datatable da otomatik gelen sıralama butonlarını pasif istediğim için
+                ordering: false, // sıralama kapalı
                 columns: [
                     {
                         data: 'ad',
@@ -49,18 +45,14 @@
                     },
                     {
                         data: 'id',
-                        render: function (id) {
-                            return `
-                                <a href="/Bilet/SatinAl/${id}" class="btn btn-success btn-sm">Bilet Al</a>
-                            `;
+                        render: function () {
+                            return `<a href="/Home/Salonlar" class="btn btn-success btn-sm">Bilet Al</a>`;
                         }
                     }
                 ]
             });
-        },
-        error: function (err) {
-            console.error("Veri alınamadı", err);
-        }
-    });
+        })
+        .catch(function (error) {
+            console.error("Veri alınamadı:", error);
+        });
 });
-

@@ -1,4 +1,6 @@
-﻿using SinemaApp.Business.Abstract;
+﻿using Microsoft.EntityFrameworkCore;
+using SinemaApp.Business.Abstract;
+using SinemaApp.DataAccessLayer.Abstract;
 using SinemaApp.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,10 @@ namespace SinemaApp.Business.Concrete
 {
     public class SalonManager : ISalonManager
     {
-        public Task<List<Salon>> GetAllWithSeansAsync()
+        private readonly IGenericDal<Salon> _salonDal;
+        public SalonManager(IGenericDal<Salon> salonDal)
         {
-            throw new NotImplementedException();
+            _salonDal = salonDal;
         }
 
         public Task<Salon> GetFilterAsync(Expression<Func<Salon, bool>> filter)
@@ -31,11 +34,13 @@ namespace SinemaApp.Business.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<List<Salon>> TFilterAsync(Expression<Func<Salon, bool>> predicate)
+        public async Task<List<Salon>> TFilterAsync(Expression<Func<Salon, bool>> filter)
         {
-            throw new NotImplementedException();
+            return await _salonDal.GetQueryable()
+            .Include(s => s.Seanslar)  
+            .ToListAsync();
         }
-
+         
         public Task TUpdateAsync(Salon entity)
         {
             throw new NotImplementedException();

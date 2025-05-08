@@ -1,4 +1,5 @@
 ﻿using SinemaApp.Business.Abstract;
+using SinemaApp.DataAccessLayer.Abstract;
 using SinemaApp.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -11,24 +12,26 @@ namespace SinemaApp.Business.Concrete
 {
     public class SeansManager : ISeansManager
     {
-        public Task<List<Seans>> GetAllWithSeansAsync()
+        private readonly IGenericDal<Seans> _seansDal;
+        public SeansManager(IGenericDal<Seans> seansDal)
         {
-            throw new NotImplementedException();
+            _seansDal = seansDal;
         }
+        
 
         public Task<Seans> GetFilterAsync(Expression<Func<Seans, bool>> filter)
         {
             throw new NotImplementedException();
         }
 
-        public Task TAddAsync(Seans entity)
+        public async Task TAddAsync(Seans entity)
         {
-            throw new NotImplementedException();
+            await _seansDal.AddAsync(entity);
         }
 
-        public Task TDeleteAsync(Seans entity)
+        public async Task TDeleteAsync(Seans entity)
         {
-            throw new NotImplementedException();
+            await _seansDal.DeleteAsync(entity); ;
         }
 
         public Task<List<Seans>> TFilterAsync(Expression<Func<Seans, bool>> predicate)
@@ -36,9 +39,9 @@ namespace SinemaApp.Business.Concrete
             throw new NotImplementedException();
         }
 
-        public Task TUpdateAsync(Seans entity)
+        public async Task TUpdateAsync(Seans entity)
         {
-            throw new NotImplementedException();
+            await _seansDal.UpdateAsync(entity); 
         }
     }
 }

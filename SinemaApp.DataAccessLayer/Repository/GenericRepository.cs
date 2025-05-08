@@ -36,10 +36,6 @@ namespace SinemaApp.DataAccessLayer.Repository
             }
 
           }
-        //public IQueryable<T> Filter(Expression<Func<T, bool>> predicate)
-        //{
-        //    return _context.Set<T>().Where(predicate); // IQueryable döndürülür, burada sorgu henüz çalıştırılmaz.
-        //}
         public IQueryable<T> GetQueryable()
         {
             return _context.Set<T>();

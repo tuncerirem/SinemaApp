@@ -19,10 +19,6 @@ namespace SinemaApp.Business.Concrete
             _kullaniciDal = kullaniciDal;
         }
 
-        public Task<List<Kullanici>> GetAllWithSeansAsync()
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<Kullanici> GetFilterAsync(Expression<Func<Kullanici, bool>> filter)
         {

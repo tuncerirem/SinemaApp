@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SinemaApp.DataAccessLayer.Context;
 
@@ -11,9 +12,11 @@ using SinemaApp.DataAccessLayer.Context;
 namespace SinemaApp.DataAccessLayer.Migrations
 {
     [DbContext(typeof(SinemaAppContext))]
-    partial class SinemaAppContextModelSnapshot : ModelSnapshot
+    [Migration("20250424193823_mig_3")]
+    partial class mig_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

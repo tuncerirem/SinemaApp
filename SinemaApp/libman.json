@@ -2,17 +2,13 @@
   "version": "3.0",
   "defaultProvider": "cdnjs",
   "libraries": [
-
     {
-      "provider": "cdnjs",
+      "library": "spinkit@2.0.1",
+      "destination": "wwwroot/lib/spinkit/"
+    },
+    {
       "library": "jquery@3.7.1",
       "destination": "wwwroot/lib/jquery/"
     }
-  ,
-{
-  "provider": "cdnjs",
-  "library": "spinkit@2.0.1",
-  "destination": "wwwroot/lib/spinkit/"
-}
-]
+  ]
 }

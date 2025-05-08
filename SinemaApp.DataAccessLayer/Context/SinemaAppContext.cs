@@ -12,18 +12,17 @@ namespace SinemaApp.DataAccessLayer.Context
     public class SinemaAppContext : DbContext
     {
         private readonly IConfiguration _configuration;
+        public SinemaAppContext()
+        {
+
+        }
         public SinemaAppContext(DbContextOptions<SinemaAppContext> options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
         }
-
-        //public Context()
-        //{
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //var connectionString = _configuration.GetConnectionString("SinemaAppConnection");
+           
             optionsBuilder.UseSqlServer("server = (localdb)\\mssqllocaldb; initial catalog = SinemaAppDb_v1; integrated security = true");
         }
 

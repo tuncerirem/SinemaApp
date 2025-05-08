@@ -32,6 +32,11 @@ namespace SinemaApp.Business.Concrete
             throw new NotImplementedException();
         }
 
+        public Task<Salon> GetSalonWithSeansAsync(Expression<Func<Salon, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task TAddAsync(Bilet entity)
         {
             throw new NotImplementedException();
