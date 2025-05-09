@@ -28,45 +28,6 @@ namespace SinemaApp.API.Controllers
             _tokenGenerator = new TokenGenerator(_configuration);
         }
 
-        //[HttpPost("Login")]
-        //public async Task<IActionResult> Login([FromBody] Login_DTO dto)
-        //{
-        //    var kullanici = await _kullaniciManager.GetFilterAsync(x => x.Email == dto.Email);
-
-        //    if (kullanici == null)
-        //    {
-        //        return BadRequest(new { message = "Geçersiz email veya şifre" });
-        //    }
-        //    var sonuc = _passwordHasher.Verify(dto.Sifre, kullanici.Sifre);
-        //    if (!sonuc)
-        //    {
-        //        return BadRequest(new { message = "Geçersiz email veya şifre" });
-        //    }
-
-
-        //    return Ok(new { redirectURL = "/Home/Filmler" });
-        //}
-        //[HttpPost("Login")]
-        //public async Task<IActionResult> Login([FromBody] Login_DTO dto)
-        //{
-        //    var kullanici = await _kullaniciManager.GetFilterAsync(x => x.Email == dto.Email);
-
-        //    if (kullanici == null)
-        //    {
-        //        return BadRequest(new { message = "Geçersiz email veya şifre" });
-        //    }
-
-        //    var sonuc = _passwordHasher.Verify(dto.Sifre, kullanici.Sifre);
-        //    if (!sonuc)
-        //    {
-        //        return BadRequest(new { message = "Geçersiz email veya şifre" });
-        //    }
-
-        //    // Kullanıcı giriş başarılı ise, kullanıcı rolüne göre yönlendirme yapılacak.
-        //    string redirectUrl = kullanici.RolId == 1 ? "/Home/Admin" : "/Home/Filmler";
-
-        //    return Ok(new { redirectURL = redirectUrl });
-        //}
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] Login_DTO dto)
         {

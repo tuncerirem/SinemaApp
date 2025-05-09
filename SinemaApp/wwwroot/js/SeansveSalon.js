@@ -36,7 +36,7 @@ $(document).ready(function () {
                 ]
             });
 
-            // Butona týklama olayý
+            
             $(document).on('click', '.seans-sec', function () {
                 var salonId = $(this).data('salon-id');
                 var seansId = $(this).data('seans-id');

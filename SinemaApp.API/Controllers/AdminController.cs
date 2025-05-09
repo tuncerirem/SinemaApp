@@ -8,9 +8,10 @@ using System.Security.Claims;
 
 namespace SinemaApp.API.Controllers
 {
+    [Authorize()]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    
     public class AdminController : ControllerBase
     {
         private readonly IFilmManager _filmManager;
@@ -26,11 +27,11 @@ namespace SinemaApp.API.Controllers
         public async Task<IActionResult> FilmEkle([FromBody] Film_DTO dto)
         {
 
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            if (userRole != "Admin")
-            {
-                return Forbid();
-            }
+            //var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            //if (userRole != "Admin")
+            //{
+            //    return Forbid();
+            //}
 
 
             var film = new Film
