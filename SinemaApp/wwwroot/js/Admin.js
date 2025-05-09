@@ -1,6 +1,8 @@
-﻿$(document).ready(function () {
-    
+﻿
+$(document).ready(function () {
+
     const token = localStorage.getItem("token");
+
     if (!token || !isValidToken(token)) {
         alert("Giriş yapmalısınız.");
         localStorage.removeItem("token");
@@ -18,7 +20,6 @@
         return;
     }
 
-    
     if (decoded.role !== 'Admin') {
         alert("Bu sayfayı görüntüleme yetkiniz yok.");
         localStorage.removeItem("token");
@@ -36,7 +37,6 @@
         }
     }, 5000);
 
-  
     $("#seansAdet").on("input", function () {
         const adet = parseInt($(this).val()) || 0;
         const $seansInputs = $("#seansInputs").empty();
@@ -53,7 +53,6 @@
         }
     });
 
-   
     $("#filmEkleBtn").on("click", async function () {
         const film = await getFilmData();
         if (!film || !isValid(film)) {
@@ -66,11 +65,10 @@
             alert("Film ve seanslar başarıyla eklendi.");
             window.location.href = "/Home/Film";
         } catch (xhr) {
-            alert("Hata oluştu: " + xhr.responseText);
+            alert("Hata oluştu: " + (xhr.responseText || xhr.statusText || "Bilinmeyen hata"));
         }
     });
 
-    
     async function getFilmData() {
         const seanslar = [];
         const adet = parseInt($("#seansAdet").val()) || 0;
@@ -97,8 +95,16 @@
         };
     }
 
-   
     function isValid(data) {
-        return data && data.ad && data.tur && data.zaman > 0 && data.fotograf && data.fragman && data.seanslar.length > 0;
+        return (
+            data &&
+            data.ad &&
+            data.tur &&
+            data.zaman > 0 &&
+            data.fotograf &&
+            data.fragman &&
+            Array.isArray(data.seanslar) &&
+            data.seanslar.length > 0
+        );
     }
 });

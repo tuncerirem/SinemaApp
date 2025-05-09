@@ -1,22 +1,15 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     const token = localStorage.getItem("token");
-    let decoded;
 
-    try {
-        decoded = jwt_decode(token);
-    } catch (e) {
-        alert("Geçersiz token.");
-        localStorage.removeItem("token");
-        window.location.href = "/Login";
-        return;
-    }
-
-    if (decoded.role !== 'Admin') {
-        alert("Bu sayfayı görüntüleme yetkiniz yok.");
-        localStorage.removeItem("token");
-        window.location.href = "/Login";
-        return;
+    if (token) {
+        try {
+            jwt_decode(token); 
+        } catch (e) {
+            alert("Geçersiz token.");
+            localStorage.removeItem("token");
+            window.location.href = "/Login";
+            return;
+        }
     }
 
     $('#loginFormElement').on('submit', function (e) {
@@ -25,6 +18,11 @@ $(document).ready(function () {
         const username = $('#Email').val();
         const password = $('#Sifre').val();
         const loginBtn = $('button[type="submit"]');
+
+        if (!username || !password) {
+            alert("Lütfen e-posta ve şifre giriniz.");
+            return;
+        }
 
         loginBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Giriş Yapılıyor...');
         $('#loadingPanel').show();
@@ -37,10 +35,21 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("Gelen response:", response);
                 if (response.token) {
-                    localStorage.setItem("token", response.token);
-                    localStorage.setItem("role", response.role);
+                    try {
+                        const decoded = jwt_decode(response.token);
+                        localStorage.setItem("token", response.token);
+                        localStorage.setItem("role", decoded.role);
+                        checkUserRole();
+                    } catch (e) {
+                        alert("Token çözümlenirken hata oluştu.");
+                        loginBtn.prop('disabled', false).html('Giriş Yap');
+                        $('#loadingPanel').hide();
+                    }
+                } else {
+                    alert("Giriş başarısız. Token alınamadı.");
+                    loginBtn.prop('disabled', false).html('Giriş Yap');
+                    $('#loadingPanel').hide();
                 }
-                checkUserRole(); 
             },
             error: function (xhr, status, error) {
                 console.error('Hata:', error);
@@ -90,6 +99,7 @@ $(document).ready(function () {
             }
         });
     });
+
     function checkUserRole() {
         const token = localStorage.getItem("token");
 
@@ -98,7 +108,16 @@ $(document).ready(function () {
             return;
         }
 
-        const decoded = jwt_decode(token);
+        let decoded;
+        try {
+            decoded = jwt_decode(token);
+        } catch (e) {
+            alert("Token çözümlenemedi.");
+            localStorage.removeItem("token");
+            window.location.href = "/Login";
+            return;
+        }
+
         const role = decoded.role;
 
         if (role === 'Admin') {
@@ -107,7 +126,7 @@ $(document).ready(function () {
             window.location.href = "Home/Filmler";
         } else {
             alert("Geçersiz kullanıcı rolü.");
-            window.location.href = "/login";
+            window.location.href = "/Login";
         }
     }
 });

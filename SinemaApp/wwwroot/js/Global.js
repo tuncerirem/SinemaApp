@@ -6,7 +6,7 @@ function addAuthorizationHeader(xhr) {
     const token = localStorage.getItem("token");
     if (token) {
         xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-       
+
     }
 }
 
@@ -29,11 +29,11 @@ function Token_kontrol() {
     if (!token || !isValidToken(token)) {
         alert("Token geçersiz veya süresi dolmuş.");
         localStorage.removeItem("token");
-        sessionStorage.clear(); 
-        window.location.href = "/Login"; 
+        sessionStorage.clear();
+        window.location.href = "/Login";
         return false;
     }
-    
+
     return true;
 }
 
@@ -41,7 +41,7 @@ function Token_kontrol() {
 function VeriList(controller, method) {
     if (!Token_kontrol()) return;
 
-    const url = `${API_URL}${controller}/${method}`; 
+    const url = `${API_URL}${controller}/${method}`;
     return $.ajax({
         url: url,
         type: "GET",
@@ -56,7 +56,7 @@ function VeriList(controller, method) {
 function VeriGonder(controller, method, data) {
     if (!Token_kontrol()) return;
 
-    const url = `${API_URL}${controller}/${method}`; 
+    const url = `${API_URL}${controller}/${method}`;
     return $.ajax({
         url: url,
         type: "POST",
@@ -70,5 +70,5 @@ function VeriGonder(controller, method, data) {
 }
 
 $(document).ready(function () {
-    
+
 });
