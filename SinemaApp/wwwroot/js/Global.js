@@ -70,7 +70,7 @@ function checkUserRole() {
 
     const token = localStorage.getItem("token")
     if (!token) {
-        if (!window.location.href.includes("/")) {
+        if (!window.location.href.includes("/Login")) {
             window.location.href = "/Login";
         }
         return false;
