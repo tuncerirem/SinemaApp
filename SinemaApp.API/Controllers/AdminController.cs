@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace SinemaApp.API.Controllers
 {
-    [Authorize()]
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     

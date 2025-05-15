@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SinemaApp.API.DTO;
 using SinemaApp.Business.Abstract;
 
 namespace SinemaApp.API.Controllers
 {
+   
     [ApiController]
     [Route("api/[controller]")]
+    
     public class FilmController : ControllerBase
     {
         private readonly IFilmManager _filmManager;

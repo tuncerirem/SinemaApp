@@ -8,9 +8,11 @@ using SinemaApp.Entities.Concrete;
 using Microsoft.AspNetCore.Identity;
 using SinemaApp.Business.Concrete;
 using SinemaApp.API.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SinemaApp.API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class HesapController : ControllerBase

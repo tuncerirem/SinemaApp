@@ -1,132 +1,64 @@
-﻿$(document).ready(function () {
-    const token = localStorage.getItem("token");
+﻿
+$(document).ready(function () {
+    //localStorage.removeItem("token");
+    //localStorage.removeItem("role");
+});
 
-    if (token) {
-        try {
-            jwt_decode(token); 
-        } catch (e) {
-            alert("Geçersiz token.");
-            localStorage.removeItem("token");
-            window.location.href = "/Login";
-            return;
-        }
+$("#loginFormElement").on("submit", function (e) {
+    e.preventDefault();
+
+    const email = $("#Email").val();
+    const sifre = $("#Sifre").val();
+
+    if (!email || !sifre) {
+        alert("Lütfen e-posta ve şifre giriniz.");
+        return;
     }
 
-    $('#loginFormElement').on('submit', function (e) {
-        e.preventDefault();
+    const loginData = { email, sifre };
 
-        const username = $('#Email').val();
-        const password = $('#Sifre').val();
-        const loginBtn = $('button[type="submit"]');
+    $.ajax({
+        url: `https://localhost:44340/api/Hesap/Login`,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(loginData),
+        success: function (response) {
+            console.log("Login response:", response);
 
-        if (!username || !password) {
-            alert("Lütfen e-posta ve şifre giriniz.");
-            return;
-        }
+            const token = response.token || response.data?.token;
+            const role = response.role || response.data?.role;
 
-        loginBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Giriş Yapılıyor...');
-        $('#loadingPanel').show();
+            if (token) {
+                localStorage.setItem("token", token);
+                localStorage.setItem("role", role);
+                var rol = localStorage.getItem("role");
+                try {
+                    //const decoded = jwt_decode(token);
+                    //const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-        $.ajax({
-            url: `${API_URL}Hesap/Login`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ Email: username, Sifre: password }),
-            success: function (response) {
-                console.log("Gelen response:", response);
-                if (response.token) {
-                    try {
-                        const decoded = jwt_decode(response.token);
-                        localStorage.setItem("token", response.token);
-                        localStorage.setItem("role", decoded.role);
-                        checkUserRole();
-                    } catch (e) {
-                        alert("Token çözümlenirken hata oluştu.");
-                        loginBtn.prop('disabled', false).html('Giriş Yap');
-                        $('#loadingPanel').hide();
+                    switch (rol) {
+                        case "Admin":
+                            window.location.href = "/Home/Admin";
+                            break;
+                        case "Kullanici":
+                            window.location.href = "/Home/Filmler";
+                            break;
+                        default:
+                            alert("Yetkisiz rol.");
+                            localStorage.removeItem("token");
+                            break;
                     }
-                } else {
-                    alert("Giriş başarısız. Token alınamadı.");
-                    loginBtn.prop('disabled', false).html('Giriş Yap');
-                    $('#loadingPanel').hide();
+
+                } catch (e) {
+                    alert("Token çözümlemesi başarısız.");
+                    localStorage.removeItem("token");
                 }
-            },
-            error: function (xhr, status, error) {
-                console.error('Hata:', error);
-                alert(xhr.responseText || 'Bir hata oluştu. Lütfen tekrar deneyin.');
-                loginBtn.prop('disabled', false).html('Giriş Yap');
-                $('#loadingPanel').hide();
+            } else {
+                alert("Giriş başarısız. Token alınamadı.");
             }
-        });
+        },
+        error: function (xhr) {
+            alert("Giriş başarısız: " + (xhr.responseText || "Bilinmeyen hata"));
+        }
     });
-
-    $('#KaydolBtn').on('click', function () {
-        $('#loginForm').hide();
-        $('#signupForm').show();
-    });
-
-    $('#registerForm').on('submit', function (e) {
-        e.preventDefault();
-
-        const email = $('#RegEmail').val();
-        const password = $('#RegSifre').val();
-        const name = $('#RegAd').val();
-        const surname = $('#RegSoyad').val();
-
-        if (!email || !password || !name || !surname) {
-            alert("Lütfen tüm alanları doldurunuz.");
-            return;
-        }
-
-        $.ajax({
-            url: `${API_URL}Hesap/Register`,
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({
-                Email: email,
-                Sifre: password,
-                Ad: name,
-                Soyad: surname
-            }),
-            success: function () {
-                alert('Başarıyla kaydoldunuz! Şimdi giriş yapabilirsiniz.');
-                $('#signupForm').hide();
-                $('#loginForm').show();
-            },
-            error: function (xhr, status, error) {
-                console.error('Hata:', error);
-                alert(xhr.responseText || 'Bir hata oluştu. Lütfen tekrar deneyin.');
-            }
-        });
-    });
-
-    function checkUserRole() {
-        const token = localStorage.getItem("token");
-
-        if (!token) {
-            console.error("Token bulunamadı.");
-            return;
-        }
-
-        let decoded;
-        try {
-            decoded = jwt_decode(token);
-        } catch (e) {
-            alert("Token çözümlenemedi.");
-            localStorage.removeItem("token");
-            window.location.href = "/Login";
-            return;
-        }
-
-        const role = decoded.role;
-
-        if (role === 'Admin') {
-            window.location.href = "Home/Admin";
-        } else if (role === 'Kullanici') {
-            window.location.href = "Home/Filmler";
-        } else {
-            alert("Geçersiz kullanıcı rolü.");
-            window.location.href = "/Login";
-        }
-    }
 });

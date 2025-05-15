@@ -25,7 +25,7 @@ namespace SinemaApp.API.Security
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, userName),
-                new Claim("role", role)
+                new Claim(ClaimTypes.Role, role)
             };
 
             var expireMinutes = Convert.ToInt32(jwtSettings["ExpireMinutes"]);
@@ -34,7 +34,7 @@ namespace SinemaApp.API.Security
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddSeconds(15),
+                expires: DateTime.UtcNow.AddMinutes(60),
                 signingCredentials: credentials
             );
 
