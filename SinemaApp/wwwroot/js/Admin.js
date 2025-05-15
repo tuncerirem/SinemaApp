@@ -1,21 +1,7 @@
 ﻿$(document).ready(function () {
-    checkUserRole("Admin");
-    Token_kontrol();
     
 });
 
-if (!checkUserRole("Admin")) return;
-
-
-//setInterval(() => {
-//    const token = localStorage.getItem("token");
-//    if (!isValidToken(token)) {
-//        alert("Oturum süresi doldu.");
-//        localStorage.removeItem("token");
-//        sessionStorage.clear();
-//        window.location.href = "/Login";
-//    }
-//}, 5000);
 
 $("#seansAdet").on("input", function () {
     const adet = parseInt($(this).val()) || 0;

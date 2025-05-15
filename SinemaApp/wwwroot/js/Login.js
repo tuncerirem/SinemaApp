@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
-    //localStorage.removeItem("token");
-    //localStorage.removeItem("role");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
 });
 
 $("#loginFormElement").on("submit", function (e) {
@@ -33,15 +33,14 @@ $("#loginFormElement").on("submit", function (e) {
                 localStorage.setItem("role", role);
                 var rol = localStorage.getItem("role");
                 try {
-                    //const decoded = jwt_decode(token);
-                    //const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-
+                    
                     switch (rol) {
-                        case "Admin":
-                            window.location.href = "/Home/Admin";
-                            break;
+                        
                         case "Kullanici":
                             window.location.href = "/Home/Filmler";
+                            break;
+                        case "Admin":
+                            window.location.href = "/Home/Admin";
                             break;
                         default:
                             alert("Yetkisiz rol.");

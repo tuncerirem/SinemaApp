@@ -23,6 +23,9 @@ function Token_kontrol() {
         window.location.href = "/Login";
         return false;
     }
+    if (!token) {
+        window.location.href = "/Login";
+    }
 
     return true;
 }
@@ -38,9 +41,9 @@ function isValidToken() {
             const now = Date.now() / 1000;
 
             if (decoded.exp >= now) {
-                return true; // Token geçerli
+                return true;
             } else {
-                // Süresi dolmuş token
+
                 localStorage.removeItem("token");
                 localStorage.removeItem("role");
                 sessionStorage.clear();
@@ -48,10 +51,10 @@ function isValidToken() {
                 return false;
             }
         } else {
-            return false; // Token yok
+            return false;
         }
     } catch (e) {
-        // Token çözümlenemedi (bozuk olabilir)
+
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         sessionStorage.clear();
@@ -64,53 +67,20 @@ function isValidToken() {
 
 
 function checkUserRole() {
-    
+
     const token = localStorage.getItem("token")
     if (!token) {
-        if (!window.location.href.includes("/Login")) {
+        if (!window.location.href.includes("/")) {
             window.location.href = "/Login";
         }
         return false;
-        //if (!isValidToken(token)) {
-        //    localStorage.removeItem("token");
-        //    localStorage.removeItem("role");
-        //    window.location.href = "/Login";
-        //    return false;
-        //}
-        //else {
-        //    localStorage.setItem("token", token);
-        //}
-        
     }
     try {
-        isValidToken(token);
+        Token_kontrol(token);
     } catch {
         localStorage.removeItem(token);
-        
-        
+
     }
-        //try {
-        //    if (token != null) {
-        //        const decoded = jwt_decode(token);
-        //        /*const role = decoded.role;*/
-        //        const role = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-
-
-        //        if (requiredRole && role !== requiredRole) {
-        //            alert("Bu sayfayı görüntüleme yetkiniz yok.");
-        //            localStorage.removeItem("token");
-        //            window.location.href = "/Login";
-        //            return false;
-        //        }
-        //        return true;
-        //    }
-        //} catch (e) {
-        //    alert("Token çözümlenemedi.");
-        //    localStorage.removeItem("token");
-        //    window.location.href = "/Login";
-        //    return false;
-        //}
-    
 }
 
 function VeriList(controller, method) {
